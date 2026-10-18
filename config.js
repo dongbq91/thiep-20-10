@@ -8,7 +8,7 @@
 window.CARD_CONFIG = {
   receiver: "Hoàng Hải Anh", // Tên đầy đủ người nhận
   nickname: "Hải Anh",       // Tên gọi trong lời chúc
-  sender: "Anh",             // Tên người gửi
+  sender: "HiDongne",        // Tên người gửi (chữ ký)
 
   // Ảnh đại diện trong thiệp (để "" nếu không muốn hiện ảnh)
   avatar: "assets/avatar.jpg",
@@ -20,12 +20,14 @@ window.CARD_CONFIG = {
   openButton: "Mở thiệp 💌",
 
   // Nội dung bên trong (hiện từng chữ)
-  title: "Gửi {nick} ✨",
-  message: `20/10 rồi đó! Chúc {nick} lúc nào cũng cười tươi như tấm ảnh này nha 📸
+  title: "Gửi cô giáo\n{nick} ✨",
+  message: `Chúc mừng 20/10 cô giáo chạy bộ dẻo dai nhất quả đất! 🏃‍♀️
 
-Mong công việc suôn sẻ, deadline nhẹ nhàng, ăn gì cũng ngon mà không lo tăng cân 😆
+Chúc {nick} lên lớp thì học trò ngoan, chấm bài toàn gặp điểm 10, ra đường chạy thì pace ngày càng nhanh mà không hụt hơi 😆
 
-Cứ vui vẻ, tự tin và là chính mình nhé. Happy Women's Day! 🌷`,
+Giáo án, deadline hay đường chạy 21km, cái gì cũng về đích nhẹ nhàng và luôn cười thật tươi nhé.
+
+Happy Women's Day! 🌷`,
   signature: "— {from} —",
 
   // Hiệu ứng
