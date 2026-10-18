@@ -312,6 +312,24 @@
     if (blankEl) quizOpen.classList.add("show");
     replayBtn.classList.add("show");
     scroller.scrollTo({ top: scroller.scrollHeight, behavior: "smooth" });
+    // kéo trang xuống để thấy câu hỏi nhỏ dưới thiệp
+    if (blankEl) setTimeout(() => quizOpen.scrollIntoView({ behavior: "smooth", block: "end" }), 400);
+  }
+
+  // Đo chiều cao nội dung khi đã hiện đủ chữ, để thiệp mở ra vừa khít
+  function measureOpenHeight() {
+    const t = titleEl.innerHTML;
+    const m = messageEl.innerHTML;
+    titleEl.style.whiteSpace = messageEl.style.whiteSpace = "pre-line";
+    titleEl.textContent = fill(cfg.title);
+    messageEl.textContent = fill(cfg.message).replace(/\{blank\}/g, "....");
+    scroller.style.height = "auto";
+    const h = scroller.offsetHeight;
+    scroller.style.height = "";
+    titleEl.style.whiteSpace = messageEl.style.whiteSpace = "";
+    titleEl.innerHTML = t;
+    messageEl.innerHTML = m;
+    return h;
   }
 
   // Chạm vào thiệp khi đang chạy chữ để hiện nhanh
@@ -333,6 +351,7 @@
   function openCard() {
     if (opened) return;
     opened = true;
+    card.style.setProperty("--open-h", measureOpenHeight() + "px");
     card.classList.add("open");
     cardWrap.classList.add("opened");
     openBtn.classList.add("hide");
