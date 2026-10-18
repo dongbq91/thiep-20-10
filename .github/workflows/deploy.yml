@@ -1,0 +1,39 @@
+name: Deploy thiệp lên GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Gắn mã phiên bản (commit) vào link css/js/ảnh để điện thoại luôn tải bản mới
+      - name: Gắn phiên bản chống cache
+        run: |
+          V="${GITHUB_SHA::8}"
+          mkdir -p _site
+          cp -r index.html style.css script.js config.js assets .nojekyll _site/
+          sed -i "s/__BUILD__/$V/g" _site/index.html
+          echo "{\"v\":\"$V\"}" > _site/version.json
+          echo "Phiên bản: $V"
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+      - id: deployment
+        uses: actions/deploy-pages@v4

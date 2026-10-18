@@ -41,8 +41,12 @@
   openBtn.textContent = fill(cfg.openButton);
   signatureEl.textContent = fill(cfg.signature);
 
+  // Gắn phiên bản vào link ảnh để điện thoại không dùng ảnh cũ trong cache
+  const build = window.BUILD && window.BUILD.indexOf("__") !== 0 ? window.BUILD : "";
+  const bust = (url) => (build ? url + (url.includes("?") ? "&" : "?") + "v=" + build : url);
+
   if (cfg.avatar) {
-    $("avatarImg").src = cfg.avatar;
+    $("avatarImg").src = bust(cfg.avatar);
     $("avatarImg").alt = to;
     $("avatar").hidden = false;
   }
@@ -166,7 +170,7 @@
   $("quizBtn").textContent = fill(quiz.button);
   $("winTitle").textContent = fill(quiz.successTitle);
   $("winClose").textContent = fill(quiz.closeButton);
-  if (quiz.photo) $("winPhoto").src = quiz.photo;
+  if (quiz.photo) $("winPhoto").src = bust(quiz.photo);
   else $("winPhoto").hidden = true;
 
   let blankEl = null;
