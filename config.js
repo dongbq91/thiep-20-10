@@ -31,6 +31,8 @@ Happy Women's Day! 🌷`,
   // Câu đố nhỏ cuối thư
   quiz: {
     question: "Câu hỏi nhỏ 🤔\nĐố cô điền đúng chỗ .... trong thư!",
+    openButton: "Trả lời ✍️",      // nút dưới thiệp để mở ô nhập
+    solvedButton: "Xem lại ảnh 🎁", // nút sau khi đã trả lời đúng
     placeholder: "Cô nhập câu trả lời...",
     button: "Trả lời",
     keyword: "đông", // câu trả lời phải có chữ này (không phân biệt hoa thường)

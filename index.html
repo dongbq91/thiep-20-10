@@ -78,22 +78,12 @@
             <div class="header">
               <div class="avatar" id="avatar" hidden>
                 <img id="avatarImg" alt="" />
-                <span class="avatar-badge" aria-hidden="true">👟</span>
+                <span class="avatar-badge" aria-hidden="true">🌸</span>
               </div>
               <h2 class="title" id="title"></h2>
             </div>
             <p class="message" id="message"></p>
             <p class="signature" id="signature"></p>
-
-            <form class="quiz" id="quiz" autocomplete="off">
-              <p class="quiz-q" id="quizQ"></p>
-              <div class="quiz-row">
-                <input class="quiz-input" id="quizInput" type="text" enterkeyhint="send" />
-                <button class="quiz-btn" id="quizBtn" type="submit"></button>
-              </div>
-              <p class="quiz-count" id="quizCount" aria-live="polite"></p>
-            </form>
-
             <button class="replay" id="replayBtn" type="button">Xem lại ↺</button>
           </div>
         </section>
@@ -136,7 +126,26 @@
     </div>
 
     <button class="open-btn" id="openBtn" type="button"></button>
+
+    <!-- Câu hỏi nhỏ dưới thiệp -->
+    <button class="quiz-open" id="quizOpen" type="button">
+      <span class="quiz-open-q" id="quizOpenQ"></span>
+      <span class="quiz-open-cta" id="quizOpenCta"></span>
+    </button>
   </main>
+
+  <!-- Popup nhập câu trả lời (nằm phía trên để bàn phím không che) -->
+  <div class="ask" id="ask" hidden>
+    <form class="quiz" id="quiz" autocomplete="off">
+      <button class="ask-close" id="askClose" type="button" aria-label="Đóng">×</button>
+      <p class="quiz-q" id="quizQ"></p>
+      <div class="quiz-row">
+        <input class="quiz-input" id="quizInput" type="text" enterkeyhint="send" />
+        <button class="quiz-btn" id="quizBtn" type="submit"></button>
+      </div>
+      <p class="quiz-count" id="quizCount" aria-live="polite"></p>
+    </form>
+  </div>
 
   <!-- Chữ "Sai" to dần -->
   <div class="wrong-pop" id="wrongPop" aria-live="assertive"></div>

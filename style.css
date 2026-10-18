@@ -86,8 +86,12 @@ body {
   perspective: 1600px;
   transition: height .9s ease .4s;
 }
-/* Mở thiệp xong thì nút ẩn đi, thiệp dài ra gần hết màn hình */
-.card.open { height: min(88vh, 760px); }
+/* Mở thiệp xong thì nút ẩn đi, thiệp dài ra (chừa chỗ cho câu hỏi nhỏ bên dưới) */
+.card.open { height: min(calc(100vh - 140px), 700px); }
+@supports (height: 100svh) {
+  .card.open { height: min(calc(100svh - 140px), 700px); }
+}
+.card-wrap.opened + .open-btn + .quiz-open { margin-top: -10px; }
 
 /* ---------- Bìa ---------- */
 .cover {
@@ -443,18 +447,79 @@ body {
 @keyframes pop-in { from { transform: scale(.3); } to { transform: scale(1); } }
 
 /* ---------- Câu đố ---------- */
-.quiz {
+/* Nút câu hỏi nhỏ dưới thiệp */
+.quiz-open {
   display: none;
-  margin-top: 22px;
-  padding: 16px 14px 12px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, .85);
+  align-items: center;
+  gap: 12px;
+  width: var(--card-w);
+  padding: 10px 10px 10px 16px;
+  font: 600 13.5px/1.45 var(--sans);
+  color: var(--rose-800);
+  text-align: left;
+  white-space: pre-line;
+  background: rgba(255, 255, 255, .88);
   border: 1.5px dashed var(--pink-300);
-  box-shadow: 0 6px 16px rgba(164, 19, 60, .1);
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(164, 19, 60, .15);
+  cursor: pointer;
 }
-.quiz.show { display: block; animation: fade-up .6s ease both; }
-.quiz.solved { border-style: solid; border-color: var(--rose-600); }
-.quiz.shake { animation: shake .45s ease; }
+.quiz-open.show { display: flex; animation: fade-up .6s ease both; }
+.quiz-open.solved { border-style: solid; border-color: var(--pink-400); }
+.quiz-open-q { flex: 1; }
+.quiz-open-cta {
+  flex: none;
+  color: #fff;
+  background: linear-gradient(135deg, var(--pink-400), var(--rose-600));
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-size: 14px;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+.quiz-open:active { transform: scale(.98); }
+
+/* Popup nhập câu trả lời: đặt ở phía trên màn hình để bàn phím không che */
+.ask {
+  position: fixed;
+  inset: 0;
+  z-index: 12;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: max(9vh, calc(env(safe-area-inset-top) + 16px)) 16px 16px;
+  background: rgba(128, 15, 47, .3);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.ask[hidden] { display: none; }
+.ask.show { opacity: 1; }
+.quiz {
+  position: relative;
+  width: min(92vw, 380px);
+  padding: 20px 16px 12px;
+  border-radius: 20px;
+  background: linear-gradient(170deg, #fff, var(--pink-50));
+  box-shadow: 0 20px 50px rgba(128, 15, 47, .35);
+  transform: translateY(-20px) scale(.95);
+  transition: transform .4s cubic-bezier(.3, 1.5, .5, 1);
+}
+.ask.show .quiz { transform: none; }
+.ask.show .quiz.shake { animation: shake .45s ease; }
+.ask-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--rose-700);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
 @keyframes fade-up { from { opacity: 0; transform: translateY(14px); } }
 @keyframes shake {
   20%, 60% { transform: translateX(-8px); }
@@ -492,7 +557,6 @@ body {
   cursor: pointer;
 }
 .quiz-btn:active { transform: scale(.95); }
-.quiz.solved .quiz-btn, .quiz.solved .quiz-input { opacity: .6; }
 .quiz-count {
   min-height: 1.4em;
   margin-top: 8px;
@@ -505,7 +569,7 @@ body {
 .wrong-pop {
   position: fixed;
   left: 50%;
-  top: 40%;
+  top: 42vh;
   z-index: 20;
   max-width: 94vw;
   font-family: var(--sans);
@@ -585,7 +649,8 @@ body {
 
 /* Điện thoại màn hình thấp (iPhone SE...) */
 @media (max-height: 720px) {
-  .card.open { height: 92vh; }
+  .card.open { height: calc(100vh - 120px); }
+  .stage { padding-top: 16px; padding-bottom: 16px; }
   .inside-scroll { padding: 30px 20px 28px; }
   .avatar { width: 76px; height: 76px; }
   .header { gap: 14px; margin-bottom: 12px; }

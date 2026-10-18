@@ -140,6 +140,8 @@
   /* ---------- Câu đố điền chỗ trống ---------- */
   const quiz = Object.assign({
     question: "Đố cô điền đúng chỗ .... trong thư!",
+    openButton: "Trả lời ✍️",
+    solvedButton: "Xem lại ảnh 🎁",
     placeholder: "Nhập câu trả lời...",
     button: "Trả lời",
     keyword: "đông",
@@ -155,7 +157,11 @@
   const quizCount = $("quizCount");
   const wrongPop = $("wrongPop");
   const win = $("win");
+  const ask = $("ask");
+  const quizOpen = $("quizOpen");
+  const quizOpenCta = $("quizOpenCta");
   $("quizQ").textContent = fill(quiz.question);
+  $("quizOpenQ").textContent = fill(quiz.question);
   quizInput.placeholder = fill(quiz.placeholder);
   $("quizBtn").textContent = fill(quiz.button);
   $("winTitle").textContent = fill(quiz.successTitle);
@@ -178,9 +184,30 @@
     wrongCount = 0;
     solved = false;
     quizInput.value = "";
-    quizInput.disabled = false;
     quizCount.textContent = "";
-    quizEl.classList.remove("show", "solved");
+    closeAsk();
+    quizOpen.classList.remove("show", "solved");
+    quizOpenCta.textContent = fill(quiz.openButton);
+  }
+
+  function openAsk() {
+    ask.hidden = false;
+    quizInput.focus(); // gọi ngay trong lúc chạm để điện thoại bật bàn phím
+    requestAnimationFrame(() => ask.classList.add("show"));
+  }
+
+  function closeAsk() {
+    quizInput.blur();
+    ask.classList.remove("show");
+    setTimeout(() => {
+      if (!ask.classList.contains("show")) ask.hidden = true;
+    }, 300);
+  }
+
+  function openWin() {
+    win.hidden = false;
+    requestAnimationFrame(() => win.classList.add("show"));
+    burstHearts();
   }
 
   // Đúng nếu có chữ "đông" hoặc "dong" ở bất kỳ đâu (anh Đông, Dong, ĐÔNG...)
@@ -213,19 +240,26 @@
 
   function showWin(answer) {
     solved = true;
-    quizEl.classList.add("solved");
-    quizInput.disabled = true;
-    quizCount.textContent = "";
+    closeAsk();
+    quizOpen.classList.add("solved");
+    quizOpenCta.textContent = fill(quiz.solvedButton);
     if (blankEl) {
       blankEl.textContent = answer;
       blankEl.classList.add("filled");
     }
     $("winText").textContent = fill(quiz.successText).replace(/\{answer\}/g, answer);
-    win.hidden = false;
-    requestAnimationFrame(() => win.classList.add("show"));
-    burstHearts();
-    setTimeout(burstHearts, 500);
+    // đợi bàn phím đóng lại rồi mới hiện ảnh
+    setTimeout(() => {
+      openWin();
+      setTimeout(burstHearts, 500);
+    }, 250);
   }
+
+  quizOpen.addEventListener("click", () => (solved ? openWin() : openAsk()));
+  $("askClose").addEventListener("click", closeAsk);
+  ask.addEventListener("click", (e) => {
+    if (e.target === ask) closeAsk();
+  });
 
   quizEl.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -236,7 +270,6 @@
       return;
     }
     if (isCorrect(answer)) {
-      quizInput.blur();
       showWin(answer);
     } else {
       showWrong();
@@ -276,14 +309,14 @@
     await wait(300);
     signatureEl.classList.add("show");
     await wait(900);
-    if (blankEl) quizEl.classList.add("show");
+    if (blankEl) quizOpen.classList.add("show");
     replayBtn.classList.add("show");
     scroller.scrollTo({ top: scroller.scrollHeight, behavior: "smooth" });
   }
 
   // Chạm vào thiệp khi đang chạy chữ để hiện nhanh
   scroller.addEventListener("click", (e) => {
-    if (!quizEl.contains(e.target) && e.target !== replayBtn) skip = true;
+    if (e.target !== replayBtn) skip = true;
   });
   replayBtn.addEventListener("click", playContent);
 
