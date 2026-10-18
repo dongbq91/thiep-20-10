@@ -91,7 +91,6 @@ body {
   transform-origin: 18% 18%;
   animation: corner-sway 5s ease-in-out infinite;
 }
-.ff-tl { top: -4px; left: -4px; }
 .ff-br { bottom: -4px; right: -4px; --r: 180deg; transform-origin: 50% 50%; animation-delay: -2.5s; }
 /* cành hoa đào ở 2 góc còn lại */
 .ff-tr { top: -4px; right: -4px; transform-origin: 82% 18%; animation-delay: -1.2s; }
