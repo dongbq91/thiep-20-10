@@ -72,7 +72,75 @@ body {
   padding: 24px 16px calc(24px + env(safe-area-inset-bottom));
 }
 
-.card-wrap { animation: float 4s ease-in-out infinite; }
+.card-wrap { position: relative; animation: float 4s ease-in-out infinite; }
+
+/* ---------- Trang trí viền ngoài ---------- */
+.deco {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+.bloom {
+  position: absolute;
+  filter: drop-shadow(0 6px 8px rgba(128, 15, 47, .3));
+  animation: bloom-sway 6s ease-in-out infinite;
+}
+.bloom-tr {
+  width: 124px; height: 124px;
+  top: -58px; right: -18px;
+  transform-origin: 70% 30%;
+}
+.bloom-bl {
+  width: 100px; height: 100px;
+  bottom: 6px; left: -16px;
+  transform-origin: 30% 70%;
+  --r: 180deg;
+  animation-delay: -3s;
+}
+@keyframes bloom-sway {
+  0%, 100% { transform: rotate(calc(var(--r, 0deg) - 3deg)); }
+  50% { transform: rotate(calc(var(--r, 0deg) + 3deg)); }
+}
+
+.butterfly {
+  position: absolute;
+  top: -30px;
+  left: 18px;
+  width: 56px;
+  height: 47px;
+  filter: drop-shadow(0 4px 4px rgba(128, 15, 47, .25));
+  animation: flutter-path 9s ease-in-out infinite;
+}
+.butterfly .wing {
+  transform-origin: 30px 25px;
+  animation: flap .28s ease-in-out infinite alternate;
+}
+@keyframes flap { to { transform: scaleX(.35); } }
+@keyframes flutter-path {
+  0%, 100% { transform: translate(0, 0) rotate(-12deg); }
+  25% { transform: translate(26px, -10px) rotate(6deg); }
+  50% { transform: translate(52px, 4px) rotate(14deg); }
+  75% { transform: translate(20px, 8px) rotate(-4deg); }
+}
+
+.spark {
+  position: absolute;
+  font-size: 18px;
+  line-height: 1;
+  color: #ff4d8d;
+  text-shadow: 0 0 4px #fff, 0 0 10px rgba(255, 255, 255, .9);
+  animation: twinkle 2.4s ease-in-out infinite;
+}
+.sp1 { top: 24%; left: -14px; animation-delay: 0s; }
+.sp2 { top: 56%; right: -15px; font-size: 22px; animation-delay: .8s; }
+.sp3 { top: -18px; left: 40%; font-size: 14px; animation-delay: 1.5s; }
+.sp4 { top: 40%; left: -12px; font-size: 13px; animation-delay: .4s; }
+.sp5 { top: 80%; right: -12px; font-size: 14px; animation-delay: 1.9s; }
+@keyframes twinkle {
+  0%, 100% { opacity: .2; transform: scale(.5) rotate(0); }
+  50% { opacity: 1; transform: scale(1.15) rotate(45deg); }
+}
 .card-wrap.opened { animation: none; }
 @keyframes float {
   0%, 100% { transform: translateY(0) rotate(-1deg); }
@@ -661,5 +729,5 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card-wrap, .bouquet, .shine, .bokeh { animation: none; }
+  .card-wrap, .bouquet, .shine, .bokeh, .bloom, .butterfly, .butterfly .wing { animation: none; }
 }
