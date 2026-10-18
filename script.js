@@ -183,12 +183,13 @@
     quizEl.classList.remove("show", "solved");
   }
 
-  // Chỉ chấp nhận câu trả lời có chữ "đông" (hoặc gõ không dấu "dong")
+  // Đúng nếu có chữ "đông" hoặc "dong" ở bất kỳ đâu (anh Đông, Dong, ĐÔNG...)
+  // Chữ có dấu khác như "đồng", "dòng" thì sai
   function isCorrect(answer) {
     const a = answer.normalize("NFC").toLowerCase();
     const key = quiz.keyword.normalize("NFC").toLowerCase();
     const plain = key.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d");
-    return a.includes(key) || new RegExp("(^|[^a-z])" + plain + "([^a-z]|$)").test(a);
+    return a.includes(key) || a.includes(plain);
   }
 
   let popTimer = null;
