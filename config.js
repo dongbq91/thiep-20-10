@@ -20,15 +20,27 @@ window.CARD_CONFIG = {
   openButton: "Mở thiệp 💌",
 
   // Nội dung bên trong (hiện từng chữ)
-  title: "Gửi cô giáo\n{nick} ✨",
-  message: `Chúc mừng 20/10 cô giáo chạy bộ dẻo dai nhất quả đất! 🏃‍♀️
+  // {blank} là chỗ "...." để cô điền ở câu đố bên dưới
+  title: "Chào cô giáo\n{nick} ✨",
+  message: `Chúc cô giáo 20/10 nhiều niềm vui, xinh đẹp, nụ cười luôn ở trên môi.
 
-Chúc {nick} lên lớp thì học trò ngoan, chấm bài toàn gặp điểm 10, ra đường chạy thì pace ngày càng nhanh mà không hụt hơi 😆
-
-Giáo án, deadline hay đường chạy 21km, cái gì cũng về đích nhẹ nhàng và luôn cười thật tươi nhé.
+Thật nhiều sức khỏe để thực hiện ước mơ của mình. Nhiều hạnh phúc bên người mình yêu thương, đặc biệt là {blank}
 
 Happy Women's Day! 🌷`,
   signature: "— {from} —",
+
+  // Câu đố nhỏ cuối thư
+  quiz: {
+    question: "Câu hỏi nhỏ 🤔\nĐố cô điền đúng chỗ .... trong thư!",
+    placeholder: "Cô nhập câu trả lời...",
+    button: "Trả lời",
+    keyword: "đông", // câu trả lời phải có chữ này (không phân biệt hoa thường)
+    wrong: ["Sai rồi!", "Sai tiếp!", "Vẫn sai 😤", "SAI!!", "Nhìn kỹ chữ ký đi 👀", "SAI TO LUÔN!!!"],
+    successTitle: "Chuẩn không cần chỉnh! 🎉",
+    successText: "Đặc biệt là {answer} chứ còn ai vào đây nữa 😎🌹",
+    photo: "assets/dong.jpg",
+    closeButton: "Đóng 💕"
+  },
 
   // Hiệu ứng
   typingSpeed: 55,   // ms cho mỗi ký tự (nhỏ hơn = nhanh hơn)

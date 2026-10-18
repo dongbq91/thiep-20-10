@@ -84,6 +84,16 @@
             </div>
             <p class="message" id="message"></p>
             <p class="signature" id="signature"></p>
+
+            <form class="quiz" id="quiz" autocomplete="off">
+              <p class="quiz-q" id="quizQ"></p>
+              <div class="quiz-row">
+                <input class="quiz-input" id="quizInput" type="text" enterkeyhint="send" />
+                <button class="quiz-btn" id="quizBtn" type="submit"></button>
+              </div>
+              <p class="quiz-count" id="quizCount" aria-live="polite"></p>
+            </form>
+
             <button class="replay" id="replayBtn" type="button">Xem lại ↺</button>
           </div>
         </section>
@@ -127,6 +137,19 @@
 
     <button class="open-btn" id="openBtn" type="button"></button>
   </main>
+
+  <!-- Chữ "Sai" to dần -->
+  <div class="wrong-pop" id="wrongPop" aria-live="assertive"></div>
+
+  <!-- Popup trả lời đúng -->
+  <div class="win" id="win" hidden>
+    <div class="win-box" role="dialog" aria-modal="true" aria-labelledby="winTitle">
+      <img class="win-photo" id="winPhoto" alt="" />
+      <h3 class="win-title" id="winTitle"></h3>
+      <p class="win-text" id="winText"></p>
+      <button class="win-close" id="winClose" type="button"></button>
+    </div>
+  </div>
 
   <script src="config.js"></script>
   <script src="script.js"></script>

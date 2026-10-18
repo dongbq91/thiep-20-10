@@ -137,30 +137,152 @@
     return true;
   }
 
+  /* ---------- Câu đố điền chỗ trống ---------- */
+  const quiz = Object.assign({
+    question: "Đố cô điền đúng chỗ .... trong thư!",
+    placeholder: "Nhập câu trả lời...",
+    button: "Trả lời",
+    keyword: "đông",
+    wrong: ["Sai rồi!"],
+    successTitle: "Chính xác! 🎉",
+    successText: "",
+    photo: "",
+    closeButton: "Đóng"
+  }, cfg.quiz || {});
+
+  const quizEl = $("quiz");
+  const quizInput = $("quizInput");
+  const quizCount = $("quizCount");
+  const wrongPop = $("wrongPop");
+  const win = $("win");
+  $("quizQ").textContent = fill(quiz.question);
+  quizInput.placeholder = fill(quiz.placeholder);
+  $("quizBtn").textContent = fill(quiz.button);
+  $("winTitle").textContent = fill(quiz.successTitle);
+  $("winClose").textContent = fill(quiz.closeButton);
+  if (quiz.photo) $("winPhoto").src = quiz.photo;
+  else $("winPhoto").hidden = true;
+
+  let blankEl = null;
+  let wrongCount = 0;
+  let solved = false;
+
+  function makeBlank() {
+    blankEl = document.createElement("span");
+    blankEl.className = "blank";
+    blankEl.textContent = "....";
+    return blankEl;
+  }
+
+  function resetQuiz() {
+    wrongCount = 0;
+    solved = false;
+    quizInput.value = "";
+    quizInput.disabled = false;
+    quizCount.textContent = "";
+    quizEl.classList.remove("show", "solved");
+  }
+
+  // Chỉ chấp nhận câu trả lời có chữ "đông" (hoặc gõ không dấu "dong")
+  function isCorrect(answer) {
+    const a = answer.normalize("NFC").toLowerCase();
+    const key = quiz.keyword.normalize("NFC").toLowerCase();
+    const plain = key.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d");
+    return a.includes(key) || new RegExp("(^|[^a-z])" + plain + "([^a-z]|$)").test(a);
+  }
+
+  let popTimer = null;
+  function showWrong() {
+    wrongCount++;
+    const list = quiz.wrong.length ? quiz.wrong : ["Sai rồi!"];
+    wrongPop.textContent = list[Math.min(wrongCount - 1, list.length - 1)];
+    wrongPop.style.fontSize = Math.min(22 + (wrongCount - 1) * 12, 110) + "px";
+    wrongPop.classList.remove("show");
+    void wrongPop.offsetWidth; // chạy lại animation
+    wrongPop.classList.add("show");
+    clearTimeout(popTimer);
+    popTimer = setTimeout(() => wrongPop.classList.remove("show"), 1500);
+
+    quizEl.classList.remove("shake");
+    void quizEl.offsetWidth;
+    quizEl.classList.add("shake");
+    quizCount.textContent = "Sai " + wrongCount + " lần rồi đó 🙈";
+    if (navigator.vibrate) navigator.vibrate(120);
+  }
+
+  function showWin(answer) {
+    solved = true;
+    quizEl.classList.add("solved");
+    quizInput.disabled = true;
+    quizCount.textContent = "";
+    if (blankEl) {
+      blankEl.textContent = answer;
+      blankEl.classList.add("filled");
+    }
+    $("winText").textContent = fill(quiz.successText).replace(/\{answer\}/g, answer);
+    win.hidden = false;
+    requestAnimationFrame(() => win.classList.add("show"));
+    burstHearts();
+    setTimeout(burstHearts, 500);
+  }
+
+  quizEl.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (solved) return;
+    const answer = quizInput.value.trim();
+    if (!answer) {
+      quizInput.focus();
+      return;
+    }
+    if (isCorrect(answer)) {
+      quizInput.blur();
+      showWin(answer);
+    } else {
+      showWrong();
+      quizInput.select();
+    }
+  });
+
+  $("winClose").addEventListener("click", () => {
+    win.classList.remove("show");
+    setTimeout(() => (win.hidden = true), 400);
+    if (blankEl) blankEl.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
   async function playContent() {
     const id = ++runId;
     skip = false;
     titleEl.textContent = "";
     messageEl.textContent = "";
+    blankEl = null;
     signatureEl.classList.remove("show");
     replayBtn.classList.remove("show");
+    resetQuiz();
     scroller.scrollTop = 0;
 
     const speed = Math.max(10, Number(cfg.typingSpeed) || 55);
     if (!(await typeInto(titleEl, fill(cfg.title), speed * 1.3, id))) return;
     await wait(400);
-    if (!(await typeInto(messageEl, fill(cfg.message), speed, id))) return;
+    const parts = fill(cfg.message).split("{blank}");
+    for (let i = 0; i < parts.length; i++) {
+      if (i > 0) {
+        messageEl.insertBefore(makeBlank(), caret);
+        await wait(speed * 8);
+      }
+      if (!(await typeInto(messageEl, parts[i], speed, id))) return;
+    }
     caret.remove();
     await wait(300);
     signatureEl.classList.add("show");
     await wait(900);
+    if (blankEl) quizEl.classList.add("show");
     replayBtn.classList.add("show");
     scroller.scrollTo({ top: scroller.scrollHeight, behavior: "smooth" });
   }
 
   // Chạm vào thiệp khi đang chạy chữ để hiện nhanh
   scroller.addEventListener("click", (e) => {
-    if (e.target !== replayBtn) skip = true;
+    if (!quizEl.contains(e.target) && e.target !== replayBtn) skip = true;
   });
   replayBtn.addEventListener("click", playContent);
 
