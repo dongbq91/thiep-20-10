@@ -1,7 +1,9 @@
 (() => {
   const cfg = Object.assign({
     receiver: "Em",
+    nickname: "",
     sender: "Anh",
+    avatar: "",
     coverTop: "Happy Women's Day",
     coverBig: "20.10",
     coverSub: "Gửi tặng {to}",
@@ -18,7 +20,9 @@
   const params = new URLSearchParams(location.search);
   const to = params.get("to") || cfg.receiver;
   const from = params.get("from") || cfg.sender;
-  const fill = (s) => String(s || "").replace(/\{to\}/g, to).replace(/\{from\}/g, from);
+  const nick = params.get("nick") || cfg.nickname || to;
+  const fill = (s) =>
+    String(s || "").replace(/\{to\}/g, to).replace(/\{nick\}/g, nick).replace(/\{from\}/g, from);
 
   const $ = (id) => document.getElementById(id);
   const card = $("card");
@@ -36,6 +40,12 @@
   $("coverSub").textContent = fill(cfg.coverSub);
   openBtn.textContent = fill(cfg.openButton);
   signatureEl.textContent = fill(cfg.signature);
+
+  if (cfg.avatar) {
+    $("avatarImg").src = cfg.avatar;
+    $("avatarImg").alt = to;
+    $("avatar").hidden = false;
+  }
 
   /* ---------- Cánh hoa rơi (ít, nhẹ nhàng) ---------- */
   const petalColors = [
