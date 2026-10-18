@@ -242,7 +242,9 @@
     if (navigator.vibrate) navigator.vibrate(120);
   }
 
-  function showWin(answer) {
+  function showWin(raw) {
+    // viết hoa chữ Đông: "anh đông" / "dong" -> "anh Đông" / "Đông"
+    const answer = raw.normalize("NFC").replace(/đông|dong/gi, "Đông");
     solved = true;
     closeAsk();
     quizOpen.classList.add("solved");
@@ -250,6 +252,10 @@
     if (blankEl) {
       blankEl.textContent = answer;
       blankEl.classList.add("filled");
+      // câu trả lời dài có thể làm xuống dòng -> nới thiệp cho vừa
+      scroller.style.height = "auto";
+      card.style.setProperty("--open-h", scroller.offsetHeight + "px");
+      scroller.style.height = "";
     }
     $("winText").textContent = fill(quiz.successText).replace(/\{answer\}/g, answer);
     // đợi bàn phím đóng lại rồi mới hiện ảnh

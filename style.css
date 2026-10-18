@@ -301,6 +301,31 @@ body {
 }
 .inside-scroll::-webkit-scrollbar { display: none; }
 
+/* Chùm hoa nhiều màu góc trên phải (trang trong) */
+.inside-flowers {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 64px;
+  z-index: 2;
+  pointer-events: none;
+}
+.fl {
+  position: absolute;
+  filter: drop-shadow(0 2px 3px rgba(128, 15, 47, .25));
+  animation: fl-bob 4s ease-in-out infinite;
+}
+.fl-1 { width: 24px; height: 24px; top: -2px; right: 112px; animation-delay: -1s; }
+.fl-2 { width: 32px; height: 32px; top: 2px;  right: 82px;  animation-delay: -2s; }
+.fl-3 { width: 36px; height: 36px; top: -4px; right: 50px;  animation-delay: -.5s; }
+.fl-4 { width: 46px; height: 46px; top: -8px; right: 8px;   animation-delay: -3s; }
+.fl-5 { width: 24px; height: 24px; top: 34px; right: 4px;   animation-delay: -1.6s; }
+@keyframes fl-bob {
+  0%, 100% { transform: rotate(-8deg) scale(1); }
+  50% { transform: rotate(8deg) scale(1.06); }
+}
+
 /* Ảnh đại diện + tiêu đề */
 .header {
   display: flex;
