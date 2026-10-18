@@ -22,8 +22,7 @@ window.CARD_CONFIG = {
   // Nội dung bên trong (hiện từng chữ)
   // {blank} là chỗ "...." để cô điền ở câu đố bên dưới
   title: "Chào cô giáo\n{nick} ✨",
-  message: `Chúc cô giáo 20/10 nhiều niềm vui, xinh đẹp, nụ cười luôn ở trên môi.
-
+  message: `20/10 rồi đó. Chúc cô giáo lúc nào cũng cười tươi xinh đẹp, nụ cười luôn ở trên môi.
 Thật nhiều sức khỏe để thực hiện ước mơ của mình. Nhiều hạnh phúc bên người mình yêu thương, đặc biệt là {blank}
 
 Happy Women's Day! 🌷`,
